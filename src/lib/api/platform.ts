@@ -78,7 +78,8 @@ export async function login(email: string, password: string, apiUrl?: string): P
 
 export async function getProfile(apiUrl?: string): Promise<User> {
   const res = await platformFetch('/auth/v1/profile', {}, apiUrl);
-  return res.json() as Promise<User>;
+  const data = await res.json();
+  return (data as any).user ?? data;
 }
 
 // --- Organizations ---
