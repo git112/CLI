@@ -1,0 +1,56 @@
+import { Command } from 'commander';
+import { ossFetch } from '../../lib/api/oss.js';
+import { requireAuth } from '../../lib/credentials.js';
+import { handleError, getRootOpts, CLIError } from '../../lib/errors.js';
+import { outputJson, outputSuccess } from '../../lib/output.js';
+
+export function registerRecordsUpdateCommand(recordsCmd: Command): void {
+  recordsCmd
+    .command('update <table>')
+    .description('Update records in a table matching a filter')
+    .option('--filter <filter>', 'Filter expression (e.g. "id=eq.123")')
+    .option('--data <json>', 'JSON data to update')
+    .action(async (table: string, opts, cmd) => {
+      const { json } = getRootOpts(cmd);
+      try {
+        requireAuth();
+
+        if (!opts.filter) {
+          throw new CLIError('--filter is required to prevent accidental updates to all rows.');
+        }
+        if (!opts.data) {
+          throw new CLIError('--data is required. Example: --data \'{"name":"Jane"}\'');
+        }
+
+        let body: any;
+        try {
+          body = JSON.parse(opts.data);
+        } catch {
+          throw new CLIError('Invalid JSON in --data.');
+        }
+
+        const params = new URLSearchParams();
+        params.set(opts.filter.split('=')[0], opts.filter.split('=').slice(1).join('='));
+        params.set('return', 'representation');
+
+        const res = await ossFetch(
+          `/api/database/records/${encodeURIComponent(table)}?${params}`,
+          {
+            method: 'PATCH',
+            body: JSON.stringify(body),
+          },
+        );
+
+        const data = await res.json();
+
+        if (json) {
+          outputJson(data);
+        } else {
+          const updated = (data as any).data ?? (Array.isArray(data) ? data : []);
+          outputSuccess(`Updated ${updated.length} record(s) in "${table}".`);
+        }
+      } catch (err) {
+        handleError(err, json);
+      }
+    });
+}

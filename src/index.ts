@@ -1,0 +1,73 @@
+import { Command } from 'commander';
+import { registerLoginCommand } from './commands/login.js';
+import { registerLogoutCommand } from './commands/logout.js';
+import { registerWhoamiCommand } from './commands/whoami.js';
+import { registerOrgsCommands } from './commands/orgs/list.js';
+import { registerProjectsCommands } from './commands/projects/list.js';
+import { registerProjectLinkCommand } from './commands/projects/link.js';
+import { registerDbCommands } from './commands/db/query.js';
+import { registerDbTablesCommand } from './commands/db/tables.js';
+import { registerRecordsCommands } from './commands/records/list.js';
+import { registerRecordsCreateCommand } from './commands/records/create.js';
+import { registerRecordsUpdateCommand } from './commands/records/update.js';
+import { registerRecordsDeleteCommand } from './commands/records/delete.js';
+import { registerFunctionsCommands } from './commands/functions/list.js';
+import { registerFunctionsDeployCommand } from './commands/functions/deploy.js';
+import { registerFunctionsInvokeCommand } from './commands/functions/invoke.js';
+import { registerStorageBucketsCommand } from './commands/storage/buckets.js';
+import { registerStorageUploadCommand } from './commands/storage/upload.js';
+import { registerStorageDownloadCommand } from './commands/storage/download.js';
+
+const program = new Command();
+
+program
+  .name('insforge')
+  .description('InsForge CLI - Command line tool for InsForge platform')
+  .version('0.1.0');
+
+// Global options
+program
+  .option('--json', 'Output in JSON format')
+  .option('--project-id <id>', 'Override linked project ID')
+  .option('--api-url <url>', 'Override Platform API URL')
+  .option('-y, --yes', 'Skip confirmation prompts');
+
+// Auth commands
+registerLoginCommand(program);
+registerLogoutCommand(program);
+registerWhoamiCommand(program);
+
+// Orgs commands
+const orgsCmd = program.command('orgs').description('Manage organizations');
+registerOrgsCommands(orgsCmd);
+
+// Projects commands
+const projectsCmd = program.command('projects').description('Manage projects');
+registerProjectsCommands(projectsCmd);
+registerProjectLinkCommand(projectsCmd);
+
+// Database commands
+const dbCmd = program.command('db').description('Database operations');
+registerDbCommands(dbCmd);
+registerDbTablesCommand(dbCmd);
+
+// Records commands
+const recordsCmd = program.command('records').description('CRUD operations on table records');
+registerRecordsCommands(recordsCmd);
+registerRecordsCreateCommand(recordsCmd);
+registerRecordsUpdateCommand(recordsCmd);
+registerRecordsDeleteCommand(recordsCmd);
+
+// Functions commands
+const functionsCmd = program.command('functions').description('Manage edge functions');
+registerFunctionsCommands(functionsCmd);
+registerFunctionsDeployCommand(functionsCmd);
+registerFunctionsInvokeCommand(functionsCmd);
+
+// Storage commands
+const storageCmd = program.command('storage').description('Manage storage');
+registerStorageBucketsCommand(storageCmd);
+registerStorageUploadCommand(storageCmd);
+registerStorageDownloadCommand(storageCmd);
+
+program.parse();
