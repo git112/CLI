@@ -40,11 +40,11 @@ export function registerDbIndexesCommand(dbCmd: Command): void {
             return;
           }
           outputTable(
-            ['Name', 'Table', 'Columns', 'Unique', 'Primary'],
+            ['Table', 'Index Name', 'Definition', 'Unique', 'Primary'],
             indexes.map((i) => [
-              str(i.name),
               str(i.tableName),
-              str(i.columns),
+              str(i.indexName),
+              str(i.indexDef),
               i.isUnique ? 'Yes' : 'No',
               i.isPrimary ? 'Yes' : 'No',
             ]),

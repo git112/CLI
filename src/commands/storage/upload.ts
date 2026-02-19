@@ -33,14 +33,11 @@ export function registerStorageUploadCommand(storageCmd: Command): void {
         const blob = new Blob([fileContent]);
         formData.append('file', blob, objectKey);
 
-        const url = objectKey
-          ? `${config.oss_host}/api/storage/buckets/${encodeURIComponent(bucketName)}/objects/${encodeURIComponent(objectKey)}`
-          : `${config.oss_host}/api/storage/buckets/${encodeURIComponent(bucketName)}/objects`;
-
-        const method = opts.key ? 'PUT' : 'POST';
+        // PUT /api/storage/buckets/{bucket}/objects/{key} for named upload
+        const url = `${config.oss_host}/api/storage/buckets/${encodeURIComponent(bucketName)}/objects/${encodeURIComponent(objectKey)}`;
 
         const res = await fetch(url, {
-          method,
+          method: 'PUT',
           headers: {
             Authorization: `Bearer ${config.api_key}`,
           },

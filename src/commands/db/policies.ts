@@ -40,13 +40,13 @@ export function registerDbPoliciesCommand(dbCmd: Command): void {
             return;
           }
           outputTable(
-            ['Name', 'Table', 'Command', 'Roles', 'Using', 'With Check'],
+            ['Table', 'Policy Name', 'Command', 'Roles', 'Qual', 'With Check'],
             policies.map((p) => [
-              str(p.name),
               str(p.tableName),
-              str(p.command),
+              str(p.policyName),
+              str(p.cmd),
               str(p.roles),
-              str(p.using),
+              str(p.qual),
               str(p.withCheck),
             ]),
           );

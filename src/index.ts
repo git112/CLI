@@ -26,6 +26,9 @@ import { registerFunctionsInvokeCommand } from './commands/functions/invoke.js';
 import { registerStorageBucketsCommand } from './commands/storage/buckets.js';
 import { registerStorageUploadCommand } from './commands/storage/upload.js';
 import { registerStorageDownloadCommand } from './commands/storage/download.js';
+import { registerStorageCreateBucketCommand } from './commands/storage/create-bucket.js';
+import { registerStorageDeleteBucketCommand } from './commands/storage/delete-bucket.js';
+import { registerStorageListObjectsCommand } from './commands/storage/list-objects.js';
 import { registerCreateCommand } from './commands/create.js';
 import { registerContextCommand } from './commands/info.js';
 import { registerListCommand } from './commands/list.js';
@@ -118,6 +121,9 @@ registerFunctionsInvokeCommand(functionsCmd);
 // Storage commands
 const storageCmd = program.command('storage').description('Manage storage');
 registerStorageBucketsCommand(storageCmd);
+registerStorageCreateBucketCommand(storageCmd);
+registerStorageDeleteBucketCommand(storageCmd);
+registerStorageListObjectsCommand(storageCmd);
 registerStorageUploadCommand(storageCmd);
 registerStorageDownloadCommand(storageCmd);
 
