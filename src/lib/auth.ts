@@ -3,7 +3,7 @@ import { randomBytes, createHash } from 'node:crypto';
 import { URL } from 'node:url';
 
 // Default OAuth client for InsForge CLI (pre-registered on the platform)
-export const DEFAULT_CLIENT_ID = 'clf_EoJWgJ3DAJpg84rIhLRj9w';
+export const DEFAULT_CLIENT_ID = 'clf_NK8cMUs41gm8ZcfdtSguVw';
 export const OAUTH_SCOPES = 'organizations:read projects:read projects:write';
 
 export interface PKCEChallenge {

@@ -23,6 +23,7 @@ import { registerRecordsDeleteCommand } from './commands/records/delete.js';
 import { registerFunctionsCommands } from './commands/functions/list.js';
 import { registerFunctionsDeployCommand } from './commands/functions/deploy.js';
 import { registerFunctionsInvokeCommand } from './commands/functions/invoke.js';
+import { registerFunctionsCodeCommand } from './commands/functions/code.js';
 import { registerStorageBucketsCommand } from './commands/storage/buckets.js';
 import { registerStorageUploadCommand } from './commands/storage/upload.js';
 import { registerStorageDownloadCommand } from './commands/storage/download.js';
@@ -115,6 +116,7 @@ registerRecordsDeleteCommand(recordsCmd);
 // Functions commands
 const functionsCmd = program.command('functions').description('Manage edge functions');
 registerFunctionsCommands(functionsCmd);
+registerFunctionsCodeCommand(functionsCmd);
 registerFunctionsDeployCommand(functionsCmd);
 registerFunctionsInvokeCommand(functionsCmd);
 
