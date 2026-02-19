@@ -27,7 +27,8 @@ import { registerStorageBucketsCommand } from './commands/storage/buckets.js';
 import { registerStorageUploadCommand } from './commands/storage/upload.js';
 import { registerStorageDownloadCommand } from './commands/storage/download.js';
 import { registerCreateCommand } from './commands/create.js';
-import { registerInfoCommand } from './commands/info.js';
+import { registerContextCommand } from './commands/info.js';
+import { registerListCommand } from './commands/list.js';
 import { registerDeploymentsDeployCommand } from './commands/deployments/deploy.js';
 import { registerDeploymentsListCommand } from './commands/deployments/list.js';
 import { registerDeploymentsStatusCommand } from './commands/deployments/status.js';
@@ -77,16 +78,17 @@ registerLoginCommand(program);
 registerLogoutCommand(program);
 registerWhoamiCommand(program);
 registerCreateCommand(program);
-registerInfoCommand(program);
+registerContextCommand(program);
+registerListCommand(program);
+registerProjectLinkCommand(program);
 
-// Orgs commands
-const orgsCmd = program.command('orgs').description('Manage organizations');
+// Orgs commands (hidden — use `insforge list` instead)
+const orgsCmd = program.command('orgs', { hidden: true }).description('Manage organizations');
 registerOrgsCommands(orgsCmd);
 
-// Projects commands
-const projectsCmd = program.command('projects').description('Manage projects');
+// Projects commands (hidden — use `insforge list` instead)
+const projectsCmd = program.command('projects', { hidden: true }).description('Manage projects');
 registerProjectsCommands(projectsCmd);
-registerProjectLinkCommand(projectsCmd);
 
 // Database commands
 const dbCmd = program.command('db').description('Database operations');
@@ -100,8 +102,8 @@ registerDbRpcCommand(dbCmd);
 registerDbExportCommand(dbCmd);
 registerDbImportCommand(dbCmd);
 
-// Records commands
-const recordsCmd = program.command('records').description('CRUD operations on table records');
+// Records commands (hidden — do not use for now)
+const recordsCmd = program.command('records', { hidden: true }).description('CRUD operations on table records');
 registerRecordsCommands(recordsCmd);
 registerRecordsCreateCommand(recordsCmd);
 registerRecordsUpdateCommand(recordsCmd);

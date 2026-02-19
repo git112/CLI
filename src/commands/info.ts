@@ -3,9 +3,9 @@ import { getCredentials, getGlobalConfig, getProjectConfig } from '../lib/config
 import { handleError, getRootOpts } from '../lib/errors.js';
 import { outputJson } from '../lib/output.js';
 
-export function registerInfoCommand(program: Command): void {
+export function registerContextCommand(program: Command): void {
   program
-    .command('info')
+    .command('current')
     .description('Show current CLI context (user, org, project)')
     .action(async (_opts, cmd) => {
       const { json } = getRootOpts(cmd);

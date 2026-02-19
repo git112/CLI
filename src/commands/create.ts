@@ -69,27 +69,24 @@ export function registerCreateCommand(program: Command): void {
         }
 
         // 1. Select organization
-        let orgId = opts.orgId ?? getGlobalConfig().default_org_id;
+        let orgId = opts.orgId;
         if (!orgId) {
           const orgs = await listOrganizations(apiUrl);
           if (orgs.length === 0) {
             throw new CLIError('No organizations found.');
           }
-          if (orgs.length === 1) {
-            orgId = orgs[0].id;
-          } else if (!json) {
-            const selected = await clack.select({
-              message: 'Select an organization:',
-              options: orgs.map((o) => ({
-                value: o.id,
-                label: o.name,
-              })),
-            });
-            if (clack.isCancel(selected)) process.exit(0);
-            orgId = selected as string;
-          } else {
-            throw new CLIError('Multiple organizations found. Specify --org-id.');
+          if (json) {
+            throw new CLIError('Specify --org-id in JSON mode.');
           }
+          const selected = await clack.select({
+            message: 'Select an organization:',
+            options: orgs.map((o) => ({
+              value: o.id,
+              label: o.name,
+            })),
+          });
+          if (clack.isCancel(selected)) process.exit(0);
+          orgId = selected as string;
         }
 
         // Save default org

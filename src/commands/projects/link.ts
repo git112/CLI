@@ -17,8 +17,8 @@ function buildOssHost(appkey: string, region: string): string {
   return `https://${appkey}.${region}.insforge.app`;
 }
 
-export function registerProjectLinkCommand(projectsCmd: Command): void {
-  projectsCmd
+export function registerProjectLinkCommand(program: Command): void {
+  program
     .command('link')
     .description('Link current directory to an InsForge project')
     .option('--project-id <id>', 'Project ID to link')
@@ -28,30 +28,27 @@ export function registerProjectLinkCommand(projectsCmd: Command): void {
       try {
         requireAuth();
 
-        let orgId = opts.orgId ?? getGlobalConfig().default_org_id;
+        let orgId = opts.orgId;
         let projectId = opts.projectId;
 
-        // Select organization if not specified
+        // Always show organization selection
         if (!orgId) {
           const orgs = await listOrganizations(apiUrl);
           if (orgs.length === 0) {
             throw new CLIError('No organizations found.');
           }
-          if (orgs.length === 1) {
-            orgId = orgs[0].id;
-          } else if (!json) {
-            const selected = await clack.select({
-              message: 'Select an organization:',
-              options: orgs.map((o) => ({
-                value: o.id,
-                label: o.name,
-              })),
-            });
-            if (clack.isCancel(selected)) process.exit(0);
-            orgId = selected as string;
-          } else {
-            throw new CLIError('Multiple organizations found. Specify --org-id.');
+          if (json) {
+            throw new CLIError('Specify --org-id in JSON mode.');
           }
+          const selected = await clack.select({
+            message: 'Select an organization:',
+            options: orgs.map((o) => ({
+              value: o.id,
+              label: o.name,
+            })),
+          });
+          if (clack.isCancel(selected)) process.exit(0);
+          orgId = selected as string;
         }
 
         // Save default org
