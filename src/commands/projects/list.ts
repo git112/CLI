@@ -1,4 +1,4 @@
-import { Command } from 'commander';
+import type { Command } from 'commander';
 import * as clack from '@clack/prompts';
 import { listOrganizations, listProjects } from '../../lib/api/platform.js';
 import { getGlobalConfig } from '../../lib/config.js';

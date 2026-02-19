@@ -1,4 +1,4 @@
-import { Command } from 'commander';
+import type { Command } from 'commander';
 import * as path from 'node:path';
 import * as fs from 'node:fs/promises';
 import * as clack from '@clack/prompts';
@@ -52,7 +52,7 @@ async function createZipBuffer(sourceDir: string): Promise<Buffer> {
       return entry;
     });
 
-    archive.finalize();
+    void archive.finalize();
   });
 }
 
@@ -63,7 +63,7 @@ export function registerDeploymentsDeployCommand(deploymentsCmd: Command): void 
     .option('--env <vars>', 'Environment variables as JSON (e.g. \'{"KEY":"value"}\')')
     .option('--meta <meta>', 'Deployment metadata as JSON')
     .action(async (directory: string | undefined, opts, cmd) => {
-      const { json, apiUrl } = getRootOpts(cmd);
+      const { json } = getRootOpts(cmd);
       try {
         requireAuth();
         const config = getProjectConfig();

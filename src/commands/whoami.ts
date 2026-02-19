@@ -1,5 +1,4 @@
-import { Command } from 'commander';
-import { getCredentials } from '../lib/config.js';
+import type { Command } from 'commander';
 import { getProfile } from '../lib/api/platform.js';
 import { handleError, getRootOpts } from '../lib/errors.js';
 import { outputJson, outputInfo } from '../lib/output.js';

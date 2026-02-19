@@ -1,5 +1,4 @@
 import { getAccessToken, getPlatformApiUrl } from '../config.js';
-import { requireAuth } from '../credentials.js';
 import { AuthError, CLIError } from '../errors.js';
 import { refreshAccessToken } from '../credentials.js';
 import type {

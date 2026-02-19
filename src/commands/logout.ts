@@ -1,4 +1,4 @@
-import { Command } from 'commander';
+import type { Command } from 'commander';
 import { clearCredentials } from '../lib/config.js';
 import { handleError, getRootOpts } from '../lib/errors.js';
 import { outputSuccess, outputJson } from '../lib/output.js';

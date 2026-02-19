@@ -1,6 +1,6 @@
 import { readFileSync, existsSync } from 'node:fs';
 import { basename } from 'node:path';
-import { Command } from 'commander';
+import type { Command } from 'commander';
 import { getProjectConfig } from '../../lib/config.js';
 import { requireAuth } from '../../lib/credentials.js';
 import { handleError, getRootOpts, CLIError, ProjectNotLinkedError } from '../../lib/errors.js';
@@ -13,7 +13,7 @@ export function registerStorageUploadCommand(storageCmd: Command): void {
     .requiredOption('--bucket <name>', 'Target bucket name')
     .option('--key <objectKey>', 'Object key (defaults to filename)')
     .action(async (file: string, opts, cmd) => {
-      const { json, projectId } = getRootOpts(cmd);
+      const { json } = getRootOpts(cmd);
       try {
         requireAuth();
 

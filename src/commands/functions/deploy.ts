@@ -1,6 +1,6 @@
 import { readFileSync, existsSync } from 'node:fs';
-import { join, basename } from 'node:path';
-import { Command } from 'commander';
+import { join } from 'node:path';
+import type { Command } from 'commander';
 import { ossFetch } from '../../lib/api/oss.js';
 import { requireAuth } from '../../lib/credentials.js';
 import { handleError, getRootOpts, CLIError } from '../../lib/errors.js';

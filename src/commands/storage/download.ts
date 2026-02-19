@@ -1,6 +1,6 @@
 import { writeFileSync } from 'node:fs';
 import { join, basename } from 'node:path';
-import { Command } from 'commander';
+import type { Command } from 'commander';
 import { getProjectConfig } from '../../lib/config.js';
 import { requireAuth } from '../../lib/credentials.js';
 import { handleError, getRootOpts, CLIError, ProjectNotLinkedError } from '../../lib/errors.js';
@@ -13,7 +13,7 @@ export function registerStorageDownloadCommand(storageCmd: Command): void {
     .requiredOption('--bucket <name>', 'Source bucket name')
     .option('--output <path>', 'Output file path (defaults to current directory)')
     .action(async (objectKey: string, opts, cmd) => {
-      const { json, projectId } = getRootOpts(cmd);
+      const { json } = getRootOpts(cmd);
       try {
         requireAuth();
 

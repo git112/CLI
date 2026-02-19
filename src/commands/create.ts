@@ -1,4 +1,4 @@
-import { Command } from 'commander';
+import type { Command } from 'commander';
 import { exec } from 'node:child_process';
 import { tmpdir } from 'node:os';
 import { promisify } from 'node:util';
@@ -12,10 +12,11 @@ import {
   getProjectApiKey,
 } from '../lib/api/platform.js';
 import { getAnonKey } from '../lib/api/oss.js';
-import { getGlobalConfig, saveGlobalConfig, saveProjectConfig, getPlatformApiUrl } from '../lib/config.js';
+import { getGlobalConfig, saveGlobalConfig, saveProjectConfig } from '../lib/config.js';
 import { requireAuth } from '../lib/credentials.js';
 import { handleError, getRootOpts, CLIError } from '../lib/errors.js';
-import { outputJson, outputSuccess } from '../lib/output.js';
+import { outputJson } from '../lib/output.js';
+import { installSkills } from '../lib/skills.js';
 import type { ProjectConfig } from '../types.js';
 
 const execAsync = promisify(exec);
@@ -230,15 +231,4 @@ async function downloadTemplate(
   }
 }
 
-async function installSkills(json: boolean): Promise<void> {
-  try {
-    if (!json) clack.log.info('Installing InsForge agent skills...');
-    await execAsync('npx skills add insforge/agent-skills', {
-      cwd: process.cwd(),
-      timeout: 60_000,
-    });
-    if (!json) clack.log.success('InsForge agent skills installed.');
-  } catch {
-    if (!json) clack.log.warn('Failed to install agent skills. You can run manually: npx skills add insforge/agent-skills');
-  }
-}
+

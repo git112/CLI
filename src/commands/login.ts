@@ -1,4 +1,4 @@
-import { Command } from 'commander';
+import type { Command } from 'commander';
 import * as clack from '@clack/prompts';
 import { saveCredentials, getGlobalConfig, getPlatformApiUrl } from '../lib/config.js';
 import { login as platformLogin, getProfile } from '../lib/api/platform.js';
