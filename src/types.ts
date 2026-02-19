@@ -87,6 +87,7 @@ export interface GlobalConfig {
 // Project config (local .insforge/project.json)
 export interface ProjectConfig {
   project_id: string;
+  project_name: string;
   org_id: string;
   appkey: string;
   region: string;

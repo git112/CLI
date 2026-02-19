@@ -87,6 +87,7 @@ export function registerProjectLinkCommand(projectsCmd: Command): void {
 
         const projectConfig: ProjectConfig = {
           project_id: project.id,
+          project_name: project.name,
           org_id: project.organization_id,
           appkey: project.appkey,
           region: project.region,

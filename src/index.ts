@@ -1,3 +1,5 @@
+import { existsSync, mkdirSync } from 'node:fs';
+import { join } from 'node:path';
 import { Command } from 'commander';
 import { registerLoginCommand } from './commands/login.js';
 import { registerLogoutCommand } from './commands/logout.js';
@@ -18,12 +20,36 @@ import { registerStorageBucketsCommand } from './commands/storage/buckets.js';
 import { registerStorageUploadCommand } from './commands/storage/upload.js';
 import { registerStorageDownloadCommand } from './commands/storage/download.js';
 import { registerCreateCommand } from './commands/create.js';
+import { registerInfoCommand } from './commands/info.js';
 import { registerDeploymentsDeployCommand } from './commands/deployments/deploy.js';
 import { registerDeploymentsListCommand } from './commands/deployments/list.js';
 import { registerDeploymentsStatusCommand } from './commands/deployments/status.js';
 import { registerDeploymentsCancelCommand } from './commands/deployments/cancel.js';
 import { registerDeploymentsMetadataCommand } from './commands/deployments/metadata.js';
 import { registerDeploymentsSlugCommand } from './commands/deployments/slug.js';
+
+const INSFORGE_LOGO = `
+██╗███╗   ██╗███████╗███████╗ ██████╗ ██████╗  ██████╗ ███████╗
+██║████╗  ██║██╔════╝██╔════╝██╔═══██╗██╔══██╗██╔════╝ ██╔════╝
+██║██╔██╗ ██║███████╗█████╗  ██║   ██║██████╔╝██║  ███╗█████╗
+██║██║╚██╗██║╚════██║██╔══╝  ██║   ██║██╔══██╗██║   ██║██╔══╝
+██║██║ ╚████║███████║██║     ╚██████╔╝██║  ██║╚██████╔╝███████╗
+╚═╝╚═╝  ╚═══╝╚══════╝╚═╝      ╚═════╝ ╚═╝  ╚═╝ ╚═════╝ ╚══════╝
+`;
+
+function showLogoOnFirstRun(): void {
+  if (process.argv.includes('--json')) return;
+
+  const localDir = join(process.cwd(), '.insforge');
+  if (existsSync(localDir)) return;
+
+  console.log(INSFORGE_LOGO);
+  console.log('  Welcome to InsForge CLI! Run `insforge login` to get started.\n');
+
+  mkdirSync(localDir, { recursive: true });
+}
+
+showLogoOnFirstRun();
 
 const program = new Command();
 
@@ -44,6 +70,7 @@ registerLoginCommand(program);
 registerLogoutCommand(program);
 registerWhoamiCommand(program);
 registerCreateCommand(program);
+registerInfoCommand(program);
 
 // Orgs commands
 const orgsCmd = program.command('orgs').description('Manage organizations');

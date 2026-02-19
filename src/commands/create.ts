@@ -141,6 +141,7 @@ export function registerCreateCommand(program: Command): void {
         const apiKey = await getProjectApiKey(project.id, apiUrl);
         const projectConfig: ProjectConfig = {
           project_id: project.id,
+          project_name: project.name,
           org_id: project.organization_id,
           appkey: project.appkey,
           region: project.region,
