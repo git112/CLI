@@ -39,6 +39,11 @@ import { registerDeploymentsStatusCommand } from './commands/deployments/status.
 import { registerDeploymentsCancelCommand } from './commands/deployments/cancel.js';
 import { registerDeploymentsMetadataCommand } from './commands/deployments/metadata.js';
 import { registerDeploymentsSlugCommand } from './commands/deployments/slug.js';
+import { registerSecretsListCommand } from './commands/secrets/list.js';
+import { registerSecretsGetCommand } from './commands/secrets/get.js';
+import { registerSecretsAddCommand } from './commands/secrets/add.js';
+import { registerSecretsUpdateCommand } from './commands/secrets/update.js';
+import { registerSecretsDeleteCommand } from './commands/secrets/delete.js';
 
 const INSFORGE_LOGO = `
 ██╗███╗   ██╗███████╗███████╗ ██████╗ ██████╗  ██████╗ ███████╗
@@ -138,5 +143,13 @@ registerDeploymentsCancelCommand(deploymentsCmd);
 // registerDeploymentsMetadataCommand(deploymentsCmd);
 // slug command doesn't work yet.
 // registerDeploymentsSlugCommand(deploymentsCmd);
+
+// Secrets commands
+const secretsCmd = program.command('secrets').description('Manage secrets');
+registerSecretsListCommand(secretsCmd);
+registerSecretsGetCommand(secretsCmd);
+registerSecretsAddCommand(secretsCmd);
+registerSecretsUpdateCommand(secretsCmd);
+registerSecretsDeleteCommand(secretsCmd);
 
 program.parse();
