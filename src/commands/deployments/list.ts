@@ -4,7 +4,7 @@ import { requireAuth } from '../../lib/credentials.js';
 import { getProjectConfig } from '../../lib/config.js';
 import { handleError, getRootOpts, ProjectNotLinkedError } from '../../lib/errors.js';
 import { outputJson, outputTable } from '../../lib/output.js';
-import type { SiteDeployment } from '../../types.js';
+
 
 export function registerDeploymentsListCommand(deploymentsCmd: Command): void {
   deploymentsCmd

@@ -37,8 +37,7 @@ import { registerDeploymentsDeployCommand } from './commands/deployments/deploy.
 import { registerDeploymentsListCommand } from './commands/deployments/list.js';
 import { registerDeploymentsStatusCommand } from './commands/deployments/status.js';
 import { registerDeploymentsCancelCommand } from './commands/deployments/cancel.js';
-import { registerDeploymentsMetadataCommand } from './commands/deployments/metadata.js';
-import { registerDeploymentsSlugCommand } from './commands/deployments/slug.js';
+
 import { registerSecretsListCommand } from './commands/secrets/list.js';
 import { registerSecretsGetCommand } from './commands/secrets/get.js';
 import { registerSecretsAddCommand } from './commands/secrets/add.js';
