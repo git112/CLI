@@ -1,5 +1,6 @@
-import { existsSync, mkdirSync } from 'node:fs';
-import { join } from 'node:path';
+import { existsSync, mkdirSync, readFileSync } from 'node:fs';
+import { join, dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { Command } from 'commander';
 import { registerLoginCommand } from './commands/login.js';
 import { registerLogoutCommand } from './commands/logout.js';
@@ -45,6 +46,9 @@ import { registerSecretsAddCommand } from './commands/secrets/add.js';
 import { registerSecretsUpdateCommand } from './commands/secrets/update.js';
 import { registerSecretsDeleteCommand } from './commands/secrets/delete.js';
 
+const __dirname = dirname(fileURLToPath(import.meta.url));
+const pkg = JSON.parse(readFileSync(join(__dirname, '../package.json'), 'utf-8')) as { version: string };
+
 const INSFORGE_LOGO = `
 ██╗███╗   ██╗███████╗███████╗ ██████╗ ██████╗  ██████╗ ███████╗
 ██║████╗  ██║██╔════╝██╔════╝██╔═══██╗██╔══██╗██╔════╝ ██╔════╝
@@ -73,7 +77,7 @@ const program = new Command();
 program
   .name('insforge')
   .description('InsForge CLI - Command line tool for InsForge platform')
-  .version('0.1.0');
+  .version(pkg.version);
 
 // Global options
 program
