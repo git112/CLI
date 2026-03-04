@@ -26,7 +26,10 @@ export function registerMetadataCommand(program: Command): void {
         console.log('\n  Auth');
         console.log(`    OAuth Providers:   ${data.auth.oAuthProviders.length ? data.auth.oAuthProviders.join(', ') : '(none)'}`);
         console.log(`    Email Verification: ${data.auth.requireEmailVerification ? 'Yes' : 'No'}`);
-        console.log(`    Password Min Length: ${data.auth.passwordMinLength}`);
+        console.log(`    Password Policy:`);
+        console.log(`      Min Length: ${data.auth.passwordMinLength}, requireLowercase: ${data.auth.requireLowercase}, requireNumber: ${data.auth.requireNumber}, requireSpecialChar: ${data.auth.requireSpecialChar}, requireUppercase: ${data.auth.requireUppercase}`);
+        console.log(`    Verify Email Method: ${data.auth.verifyEmailMethod}`);
+        console.log(`    Reset Password Method: ${data.auth.resetPasswordMethod}`);
 
         // Database
         console.log('\n  Database');
@@ -45,8 +48,8 @@ export function registerMetadataCommand(program: Command): void {
         console.log(`    Size: ${formatSize(data.storage.totalSizeInGB)}`);
         if (data.storage.buckets.length) {
           outputTable(
-            ['Bucket', 'Objects'],
-            data.storage.buckets.map((b) => [b.name, String(b.objectCount ?? '-')]),
+            ['Bucket', 'Public', 'Objects'],
+            data.storage.buckets.map((b) => [b.name, b.public ? 'Yes' : 'No', String(b.objectCount ?? '-')]),
           );
         } else {
           console.log('    No buckets.');
@@ -56,8 +59,8 @@ export function registerMetadataCommand(program: Command): void {
         console.log('\n  Functions');
         if (data.functions.length) {
           outputTable(
-            ['Slug', 'Name', 'Status'],
-            data.functions.map((f) => [f.slug, f.name, f.status]),
+            ['Slug', 'Name', 'Status', 'Description'],
+            data.functions.map((f) => [f.slug, f.name, f.status, f.description || '-']),
           );
         } else {
           console.log('    No functions deployed.');
@@ -79,6 +82,10 @@ export function registerMetadataCommand(program: Command): void {
         // Realtime
         if (data.realtime?.channels && Array.isArray(data.realtime.channels) && data.realtime.channels.length) {
           console.log(`\n  Realtime: ${data.realtime.channels.length} channel(s)`);
+          outputTable(
+            ['Id', 'Pattern', 'Webhook URLs', 'Enabled', 'Description'],
+            data.realtime.channels.map((c) => [c.id, c.pattern, c.webhookUrls?.join(', ') || '-', c.enabled ? 'Yes' : 'No', c.description || '-']),
+          );
         }
 
         // Version
