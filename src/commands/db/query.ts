@@ -47,6 +47,7 @@ export function registerDbCommands(dbCmd: Command): void {
         }
         await reportCliUsage('cli.db.query', true);
       } catch (err) {
+        await reportCliUsage('cli.db.query', false);
         handleError(err, json);
       }
     });

@@ -50,6 +50,7 @@ export function registerSecretsListCommand(secretsCmd: Command): void {
         }
         await reportCliUsage('cli.secrets.list', true);
       } catch (err) {
+        await reportCliUsage('cli.secrets.list', false);
         handleError(err, json);
       }
     });

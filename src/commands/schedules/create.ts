@@ -56,6 +56,7 @@ export function registerSchedulesCreateCommand(schedulesCmd: Command): void {
         }
         await reportCliUsage('cli.schedules.create', true);
       } catch (err) {
+        await reportCliUsage('cli.schedules.create', false);
         handleError(err, json);
       }
     });

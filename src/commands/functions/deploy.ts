@@ -60,6 +60,7 @@ export function registerFunctionsDeployCommand(functionsCmd: Command): void {
         }
         await reportCliUsage('cli.functions.deploy', true);
       } catch (err) {
+        await reportCliUsage('cli.functions.deploy', false);
         handleError(err, json);
       }
     });

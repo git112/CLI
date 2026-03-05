@@ -42,6 +42,7 @@ export function registerDbPoliciesCommand(dbCmd: Command): void {
         }
         await reportCliUsage('cli.db.policies', true);
       } catch (err) {
+        await reportCliUsage('cli.db.policies', false);
         handleError(err, json);
       }
     });

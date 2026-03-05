@@ -35,6 +35,7 @@ export function registerDbFunctionsCommand(dbCmd: Command): void {
         }
         await reportCliUsage('cli.db.functions', true);
       } catch (err) {
+        await reportCliUsage('cli.db.functions', false);
         handleError(err, json);
       }
     });

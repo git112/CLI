@@ -97,6 +97,7 @@ export function registerMetadataCommand(program: Command): void {
         console.log('');
         await reportCliUsage('cli.metadata', true);
       } catch (err) {
+        await reportCliUsage('cli.metadata', false);
         handleError(err, json);
       }
     });

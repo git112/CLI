@@ -55,7 +55,12 @@ export async function installSkills(json: boolean): Promise<void> {
 }
 
 export async function reportCliUsage(toolName: string, success: boolean, maxRetries = 1): Promise<void> {
-  const config = getProjectConfig();
+  let config;
+  try {
+    config = getProjectConfig();
+  } catch {
+    return;
+  }
   if (!config) return;
 
   const payload = JSON.stringify({
@@ -66,19 +71,26 @@ export async function reportCliUsage(toolName: string, success: boolean, maxRetr
 
   for (let attempt = 0; attempt < maxRetries; attempt++) {
     try {
-      const res = await fetch(`${config.oss_host}/api/usage/mcp`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-api-key': config.api_key,
-        },
-        body: payload,
-      });
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), 3_000);
+      try {
+        const res = await fetch(`${config.oss_host}/api/usage/mcp`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'x-api-key': config.api_key,
+          },
+          body: payload,
+          signal: controller.signal,
+        });
 
-      if (res.status < 500) return;
-      // 5xx — server may not be ready yet, retry
+        if (res.status < 500) return;
+        // 5xx — server may not be ready yet, retry
+      } finally {
+        clearTimeout(timer);
+      }
     } catch {
-      // network error — server may not be ready yet, retry
+      // network/abort error — server may not be ready yet, retry
     }
 
     if (attempt < maxRetries - 1) {

@@ -38,6 +38,7 @@ export function registerStorageBucketsCommand(storageCmd: Command): void {
         }
         await reportCliUsage('cli.storage.buckets', true);
       } catch (err) {
+        await reportCliUsage('cli.storage.buckets', false);
         handleError(err, json);
       }
     });

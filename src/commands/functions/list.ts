@@ -43,6 +43,7 @@ export function registerFunctionsCommands(functionsCmd: Command): void {
         }
         await reportCliUsage('cli.functions.list', true);
       } catch (err) {
+        await reportCliUsage('cli.functions.list', false);
         handleError(err, json);
       }
     });

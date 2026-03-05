@@ -43,6 +43,7 @@ export function registerDbTriggersCommand(dbCmd: Command): void {
         }
         await reportCliUsage('cli.db.triggers', true);
       } catch (err) {
+        await reportCliUsage('cli.db.triggers', false);
         handleError(err, json);
       }
     });

@@ -34,6 +34,7 @@ export function registerSecretsAddCommand(secretsCmd: Command): void {
         }
         await reportCliUsage('cli.secrets.add', true);
       } catch (err) {
+        await reportCliUsage('cli.secrets.add', false);
         handleError(err, json);
       }
     });

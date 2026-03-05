@@ -78,6 +78,7 @@ export function registerStorageListObjectsCommand(storageCmd: Command): void {
         }
         await reportCliUsage('cli.storage.list-objects', true);
       } catch (err) {
+        await reportCliUsage('cli.storage.list-objects', false);
         handleError(err, json);
       }
     });

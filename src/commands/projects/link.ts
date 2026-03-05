@@ -102,8 +102,9 @@ export function registerProjectLinkCommand(program: Command): void {
 
         // Install InsForge agent skills
         await installSkills(json);
-        await reportCliUsage('cli.link', true, 12);
+        await reportCliUsage('cli.link', true, 6);
       } catch (err) {
+        await reportCliUsage('cli.link', false);
         handleError(err, json);
       }
     });

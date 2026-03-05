@@ -31,6 +31,7 @@ export function registerDbTablesCommand(dbCmd: Command): void {
         }
         await reportCliUsage('cli.db.tables', true);
       } catch (err) {
+        await reportCliUsage('cli.db.tables', false);
         handleError(err, json);
       }
     });

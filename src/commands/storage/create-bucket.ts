@@ -32,6 +32,7 @@ export function registerStorageCreateBucketCommand(storageCmd: Command): void {
         }
         await reportCliUsage('cli.storage.create-bucket', true);
       } catch (err) {
+        await reportCliUsage('cli.storage.create-bucket', false);
         handleError(err, json);
       }
     });

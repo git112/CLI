@@ -211,6 +211,7 @@ export function registerDeploymentsDeployCommand(deploymentsCmd: Command): void 
         }
         await reportCliUsage('cli.deployments.deploy', true);
       } catch (err) {
+        await reportCliUsage('cli.deployments.deploy', false);
         handleError(err, json);
       }
     });

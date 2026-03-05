@@ -48,6 +48,7 @@ export function registerDeploymentsListCommand(deploymentsCmd: Command): void {
         }
         await reportCliUsage('cli.deployments.list', true);
       } catch (err) {
+        await reportCliUsage('cli.deployments.list', false);
         handleError(err, json);
       }
     });

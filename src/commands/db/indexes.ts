@@ -41,6 +41,7 @@ export function registerDbIndexesCommand(dbCmd: Command): void {
         }
         await reportCliUsage('cli.db.indexes', true);
       } catch (err) {
+        await reportCliUsage('cli.db.indexes', false);
         handleError(err, json);
       }
     });

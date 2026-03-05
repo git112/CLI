@@ -158,7 +158,7 @@ export function registerCreateCommand(program: Command): void {
 
         // Install InsForge agent skills
         await installSkills(json);
-        await reportCliUsage('cli.create', true, 12);
+        await reportCliUsage('cli.create', true, 6);
 
         // 7. Install npm dependencies (template projects only)
         if (hasTemplate) {
