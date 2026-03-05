@@ -9,6 +9,7 @@ import { requireAuth } from '../../lib/credentials.js';
 import { handleError, getRootOpts, CLIError, ProjectNotLinkedError } from '../../lib/errors.js';
 import { outputJson } from '../../lib/output.js';
 import type { CreateDeploymentResponse, StartDeploymentRequest, SiteDeployment } from '../../types.js';
+import { reportCliUsage } from '../../lib/skills.js';
 
 const POLL_INTERVAL_MS = 5_000;
 const POLL_TIMEOUT_MS = 120_000;
@@ -208,7 +209,9 @@ export function registerDeploymentsDeployCommand(deploymentsCmd: Command): void 
             clack.log.info(`Check status with: insforge deployments status ${result.deploymentId}`);
           }
         }
+        await reportCliUsage('cli.deployments.deploy', true);
       } catch (err) {
+        await reportCliUsage('cli.deployments.deploy', false);
         handleError(err, json);
       }
     });

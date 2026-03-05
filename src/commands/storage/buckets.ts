@@ -4,6 +4,7 @@ import { requireAuth } from '../../lib/credentials.js';
 import { handleError, getRootOpts } from '../../lib/errors.js';
 import { outputJson, outputTable } from '../../lib/output.js';
 import type { StorageBucketSchema } from '../../types.js';
+import { reportCliUsage } from '../../lib/skills.js';
 
 export function registerStorageBucketsCommand(storageCmd: Command): void {
   storageCmd
@@ -35,7 +36,9 @@ export function registerStorageBucketsCommand(storageCmd: Command): void {
             buckets.map((b) => [b.name, b.public ? 'Yes' : 'No']),
           );
         }
+        await reportCliUsage('cli.storage.buckets', true);
       } catch (err) {
+        await reportCliUsage('cli.storage.buckets', false);
         handleError(err, json);
       }
     });

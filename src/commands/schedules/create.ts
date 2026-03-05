@@ -4,6 +4,7 @@ import { requireAuth } from '../../lib/credentials.js';
 import { handleError, getRootOpts, CLIError } from '../../lib/errors.js';
 import { outputJson, outputSuccess } from '../../lib/output.js';
 import type { CreateScheduleResponse } from '../../types.js';
+import { reportCliUsage } from '../../lib/skills.js';
 
 export function registerSchedulesCreateCommand(schedulesCmd: Command): void {
   schedulesCmd
@@ -53,7 +54,9 @@ export function registerSchedulesCreateCommand(schedulesCmd: Command): void {
         } else {
           outputSuccess(`Schedule "${opts.name}" created (ID: ${data.id ?? 'unknown'}).`);
         }
+        await reportCliUsage('cli.schedules.create', true);
       } catch (err) {
+        await reportCliUsage('cli.schedules.create', false);
         handleError(err, json);
       }
     });

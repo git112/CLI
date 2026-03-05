@@ -3,6 +3,7 @@ import { ossFetch } from '../../lib/api/oss.js';
 import { requireAuth } from '../../lib/credentials.js';
 import { handleError, getRootOpts } from '../../lib/errors.js';
 import { outputJson, outputTable } from '../../lib/output.js';
+import { reportCliUsage } from '../../lib/skills.js';
 
 export function registerDbCommands(dbCmd: Command): void {
   dbCmd
@@ -44,7 +45,9 @@ export function registerDbCommands(dbCmd: Command): void {
             }
           }
         }
+        await reportCliUsage('cli.db.query', true);
       } catch (err) {
+        await reportCliUsage('cli.db.query', false);
         handleError(err, json);
       }
     });

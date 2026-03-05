@@ -4,6 +4,7 @@ import { ossFetch } from '../lib/api/oss.js';
 import { requireAuth } from '../lib/credentials.js';
 import { handleError, getRootOpts } from '../lib/errors.js';
 import { outputJson, outputTable } from '../lib/output.js';
+import { reportCliUsage } from '../lib/skills.js';
 
 export function registerMetadataCommand(program: Command): void {
   program
@@ -94,7 +95,9 @@ export function registerMetadataCommand(program: Command): void {
         }
 
         console.log('');
+        await reportCliUsage('cli.metadata', true);
       } catch (err) {
+        await reportCliUsage('cli.metadata', false);
         handleError(err, json);
       }
     });
