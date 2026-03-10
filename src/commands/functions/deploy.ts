@@ -6,6 +6,7 @@ import { requireAuth } from '../../lib/credentials.js';
 import { handleError, getRootOpts, CLIError } from '../../lib/errors.js';
 import { outputJson, outputSuccess } from '../../lib/output.js';
 import { reportCliUsage } from '../../lib/skills.js';
+import type { FunctionResponse } from '../../types.js';
 
 export function registerFunctionsDeployCommand(functionsCmd: Command): void {
   functionsCmd
@@ -41,22 +42,40 @@ export function registerFunctionsDeployCommand(functionsCmd: Command): void {
           exists = false;
         }
 
+        let res: Response;
         if (exists) {
-          await ossFetch(`/api/functions/${encodeURIComponent(slug)}`, {
+          res = await ossFetch(`/api/functions/${encodeURIComponent(slug)}`, {
             method: 'PUT',
             body: JSON.stringify({ name, description, code }),
           });
         } else {
-          await ossFetch('/api/functions', {
+          res = await ossFetch('/api/functions', {
             method: 'POST',
             body: JSON.stringify({ slug, name, description, code }),
           });
         }
 
+        const result = await res.json() as FunctionResponse;
+
         if (json) {
-          outputJson({ success: true, slug, action: exists ? 'updated' : 'created' });
+          outputJson(result);
         } else {
-          outputSuccess(`Function "${slug}" ${exists ? 'updated' : 'created'} successfully.`);
+          const action = exists ? 'updation' : 'creation';
+          const resultStatus = result.success ? 'success' : 'failed';
+          outputSuccess(`Function "${result.function.slug}" ${action} ${resultStatus}.`);
+          if (result.deployment) {
+            if (result.deployment.status === 'success') {
+              console.log(`  Deployment: ${result.deployment.status}${result.deployment.url ? ` → ${result.deployment.url}` : ''}`);
+            } else {
+              console.log(`  Deployment: ${result.deployment.status}`);
+              if (result.deployment.buildLogs?.length) {
+                console.log('  Build logs:');
+                for (const line of result.deployment.buildLogs) {
+                  console.log(`    ${line}`);
+                }
+              }
+            }
+          }
         }
         await reportCliUsage('cli.functions.deploy', true);
       } catch (err) {
