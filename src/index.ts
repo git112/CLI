@@ -27,6 +27,7 @@ import { registerFunctionsCommands } from './commands/functions/list.js';
 import { registerFunctionsDeployCommand } from './commands/functions/deploy.js';
 import { registerFunctionsInvokeCommand } from './commands/functions/invoke.js';
 import { registerFunctionsCodeCommand } from './commands/functions/code.js';
+import { registerFunctionsDeleteCommand } from './commands/functions/delete.js';
 import { registerStorageBucketsCommand } from './commands/storage/buckets.js';
 import { registerStorageUploadCommand } from './commands/storage/upload.js';
 import { registerStorageDownloadCommand } from './commands/storage/download.js';
@@ -126,6 +127,7 @@ registerFunctionsCommands(functionsCmd);
 registerFunctionsCodeCommand(functionsCmd);
 registerFunctionsDeployCommand(functionsCmd);
 registerFunctionsInvokeCommand(functionsCmd);
+registerFunctionsDeleteCommand(functionsCmd);
 
 // Storage commands
 const storageCmd = program.command('storage').description('Manage storage');

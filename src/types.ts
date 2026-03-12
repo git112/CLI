@@ -110,6 +110,32 @@ export type { ListFunctionsResponse, StorageBucketSchema, ListDeploymentsRespons
   ListSecretsResponse, GetSecretValueResponse, CreateSecretResponse, DeleteSecretResponse, UpdateSecretResponse
  } from '@insforge/shared-schemas';
 
+// Function deploy/update response types
+
+export interface FunctionDeploymentResult {
+  id: string;
+  status: 'success' | 'failed';
+  url: string | null;
+  buildLogs?: string[];
+}
+
+export interface FunctionResponse {
+  success: true;
+  message?: string;
+  function: {
+    id: string;
+    slug: string;
+    name: string;
+    description: string | null;
+    code: string;
+    status: 'draft' | 'active' | 'error';
+    createdAt: string;
+    updatedAt: string;
+    deployedAt: string | null;
+  };
+  deployment?: FunctionDeploymentResult | null;
+}
+
 // Deployment types (OSS - Vercel deployment)
 
 export interface CreateDeploymentResponse {
