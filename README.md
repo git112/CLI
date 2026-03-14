@@ -137,6 +137,22 @@ insforge metadata
 insforge metadata --json
 ```
 
+#### `insforge logs`
+
+Fetch backend container logs.
+
+```bash
+insforge logs <source>
+```
+
+#### `insforge docs`
+
+Browse InsForge SDK documentation.
+
+```bash
+insforge docs
+```
+
 ---
 
 ### Database — `insforge db`
@@ -256,6 +272,14 @@ Invoke an edge function.
 insforge functions invoke my-function --data '{"key": "value"}'
 insforge functions invoke my-function --method GET
 insforge functions invoke my-function --data '{"key": "value"}' --json
+```
+
+#### `insforge functions delete`
+
+Delete an edge function.
+
+```bash
+insforge functions delete <slug>
 ```
 
 ---
@@ -407,6 +431,14 @@ Delete a secret (soft delete — marks as inactive).
 ```bash
 insforge secrets delete STRIPE_API_KEY
 insforge secrets delete STRIPE_API_KEY -y   # skip confirmation
+```
+
+### Schedules — `insforge schedules`
+
+Manage scheduled tasks (cron jobs).
+
+```bash
+insforge schedules list
 ```
 
 ---
