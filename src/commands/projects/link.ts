@@ -28,31 +28,46 @@ export function registerProjectLinkCommand(program: Command): void {
     .action(async (opts, cmd) => {
       const { json, apiUrl } = getRootOpts(cmd);
       try {
-        if (opts.apiBaseUrl && opts.apiKey) {
-          // Direct OSS/Self-hosted linking bypasses OAuth
-          const projectConfig: ProjectConfig = {
-            project_id: 'oss-project',
-            project_name: 'oss-project',
-            org_id: 'oss-org',
-            appkey: 'oss',
-            region: 'local',
-            api_key: opts.apiKey,
-            oss_host: opts.apiBaseUrl,
-          };
-
-          saveProjectConfig(projectConfig);
-
-          if (json) {
-            outputJson({ success: true, project: { id: projectConfig.project_id, name: projectConfig.project_name, region: projectConfig.region } });
-          } else {
-            outputSuccess(`Linked to direct project at ${opts.apiBaseUrl}`);
+        if (opts.apiBaseUrl || opts.apiKey) {
+          if (!opts.apiBaseUrl || !opts.apiKey) {
+            throw new CLIError('Both --api-base-url and --api-key must be provided together for direct linking.');
           }
 
-          // Install CLI globally and agent skills
-          await installCliGlobally(json);
-          await installSkills(json);
-          await reportCliUsage('cli.link_direct', true, 6);
-          return;
+          try {
+            new URL(opts.apiBaseUrl);
+          } catch {
+            throw new CLIError('Invalid --api-base-url. Please provide a valid URL.');
+          }
+
+          try {
+            // Direct OSS/Self-hosted linking bypasses OAuth
+            const projectConfig: ProjectConfig = {
+              project_id: 'oss-project',
+              project_name: 'oss-project',
+              org_id: 'oss-org',
+              appkey: 'oss',
+              region: 'local',
+              api_key: opts.apiKey,
+              oss_host: opts.apiBaseUrl.replace(/\/$/, ''), // remove trailing slash if any
+            };
+
+            saveProjectConfig(projectConfig);
+
+            if (json) {
+              outputJson({ success: true, project: { id: projectConfig.project_id, name: projectConfig.project_name, region: projectConfig.region } });
+            } else {
+              outputSuccess(`Linked to direct project at ${projectConfig.oss_host}`);
+            }
+
+            // Install CLI globally and agent skills
+            await installCliGlobally(json);
+            await installSkills(json);
+            await reportCliUsage('cli.link_direct', true, 6);
+            return;
+          } catch (err) {
+            await reportCliUsage('cli.link_direct', false);
+            throw err;
+          }
         }
 
         await requireAuth(apiUrl);
