@@ -80,7 +80,7 @@ export function registerFunctionsDeployCommand(functionsCmd: Command): void {
           }
         }
         await reportCliUsage('cli.functions.deploy', !deployFailed);
-        if (deployFailed) process.exit(1);
+        if (deployFailed) throw new CLIError('Function deployment failed');
       } catch (err) {
         await reportCliUsage('cli.functions.deploy', false);
         handleError(err, json);
