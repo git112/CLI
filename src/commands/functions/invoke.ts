@@ -55,7 +55,7 @@ export function registerFunctionsInvokeCommand(functionsCmd: Command): void {
 
         // Exit with non-zero code on function errors
         if (status >= 400) {
-          throw new CLIError(`HTTP ${status}`);
+          throw new CLIError(`HTTP ${status}`, 1, 'HTTP_ERROR');
         }
       } catch (err) {
         handleError(err, json);
